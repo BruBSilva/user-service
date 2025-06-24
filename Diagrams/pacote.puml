@@ -7,6 +7,10 @@ package br {
     package edu {
         package ifg {
               package trilhadeaprendizagemapims.user {
+                    package config {
+                        class Configuracao
+                    }
+
                     package controller {
                         class UsuarioAbstractController
                         class AdministradorController
@@ -17,12 +21,19 @@ package br {
                         class UsuarioDto
                         class AlunoDto /'extende de usuarioDto'/
                         class AdministradorDto /'extende de usuarioDto'/
+                        class UsuarioCreateDto
+                        class AlunoCreateDto
+                        class AdminCreateDto
                     }
 
                     package model {
                         class Aluno
                         class Usuario
                         class Administrador
+
+                        package enums{
+                            enum Role
+                        }
 
                         Usuario <|-- Aluno
                         Usuario <|-- Administrador
@@ -35,7 +46,7 @@ package br {
                     }
 
                     package service {
-                        interface UsuarioService
+                        interface UsuarioAbstractService
                         class AlunoService
                         class AdministradorService
                     }

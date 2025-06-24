@@ -16,7 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/api/admin")
 public class AdministradorController extends UsuarioController<AdministradorDto, AdminCreateDto>{
 
     @Autowired

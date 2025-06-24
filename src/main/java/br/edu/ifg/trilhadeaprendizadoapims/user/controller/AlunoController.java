@@ -16,7 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/aluno")
+@RequestMapping("/api/aluno")
 public class AlunoController extends UsuarioController<AlunoDto, AlunoCreateDto>{
 
     @Autowired
