@@ -1,5 +1,4 @@
 @startuml
-
 ' Enum de papéis
 enum Role {
   USUARIO
