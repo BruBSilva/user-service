@@ -1,6 +1,7 @@
 package br.edu.ifg.trilhadeaprendizadoapims.user.dto;
 
 import br.edu.ifg.trilhadeaprendizadoapims.user.model.enums.Role;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,9 +10,13 @@ import lombok.Setter;
 public class UsuarioCreateDto {
 
     private Long id;
+    @NotNull
     private String nome;
+    @NotNull
     private String email;
+    @NotNull
     private String senha;
+
     private Role role;
 
 }
