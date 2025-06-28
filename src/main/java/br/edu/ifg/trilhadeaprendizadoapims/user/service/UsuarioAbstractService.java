@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 public interface UsuarioAbstractService<T extends UsuarioDto, K extends UsuarioCreateDto> {
 
     T buscarPorId(Long id);
+    K buscarPorEmail(String email);
     T atualizar(Long id, T dto);
     void excluir(Long id);
     Page<T> buscarTodos(Pageable pageable);

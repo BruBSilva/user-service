@@ -26,6 +26,12 @@ public class AdministradorService implements UsuarioAbstractService<Administrado
     }
 
     @Override
+    public AdminCreateDto buscarPorEmail(String email) {
+        Administrador entidade = repository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException());
+        return modelMapper.map(entidade, AdminCreateDto.class);
+    }
+
+    @Override
     public AdministradorDto atualizar(Long id, AdministradorDto dto) {
         Administrador entidadeAntiga = repository.findById(id).orElseThrow( () -> new EntityNotFoundException());
         Administrador entidade = modelMapper.map(dto, Administrador.class);
