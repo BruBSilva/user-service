@@ -22,6 +22,15 @@ public abstract class UsuarioController<T extends UsuarioDto, K extends UsuarioC
         }
     }
 
+    @GetMapping("/email/{email}")
+    public ResponseEntity<K> buscarPorEmail(@PathVariable String email) {
+        try {
+            return ResponseEntity.ok(getService().buscarPorEmail(email));
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         try {
