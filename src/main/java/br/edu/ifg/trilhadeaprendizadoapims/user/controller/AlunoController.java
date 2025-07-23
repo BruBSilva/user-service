@@ -38,4 +38,32 @@ public class AlunoController extends UsuarioController<AlunoDto, AlunoCreateDto>
         URI endereco = uriBuilder.path("/aluno/{id}").buildAndExpand(dtoCriado.getId()).toUri();
         return ResponseEntity.created(endereco).body(dtoCriado);
     }
+    
+    @PutMapping("/{id}/add-xp")
+    public ResponseEntity<AlunoDto> adicionarXp(@PathVariable Long id, @RequestBody XpUpdateRequest request) {
+        try {
+            AlunoDto aluno = alunoService.adicionarXp(id, request.getXpGanho());
+            return ResponseEntity.ok(aluno);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
+    @PutMapping("/{id}/recalcular-xp")
+    public ResponseEntity<AlunoDto> recalcularXp(@PathVariable Long id) {
+        try {
+            AlunoDto aluno = alunoService.recalcularXpTotal(id);
+            return ResponseEntity.ok(aluno);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
+    // DTO for XP update request
+    public static class XpUpdateRequest {
+        private int xpGanho;
+        
+        public int getXpGanho() { return xpGanho; }
+        public void setXpGanho(int xpGanho) { this.xpGanho = xpGanho; }
+    }
 }

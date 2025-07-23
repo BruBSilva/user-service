@@ -3,7 +3,9 @@ package br.edu.ifg.trilhadeaprendizadoapims.user.service;
 import br.edu.ifg.trilhadeaprendizadoapims.user.dto.AlunoCreateDto;
 import br.edu.ifg.trilhadeaprendizadoapims.user.dto.AlunoDto;
 import br.edu.ifg.trilhadeaprendizadoapims.user.model.Aluno;
+import br.edu.ifg.trilhadeaprendizadoapims.user.model.enums.Role;
 import br.edu.ifg.trilhadeaprendizadoapims.user.repository.AlunoRepository;
+import br.edu.ifg.trilhadeaprendizadoapims.user.util.Util;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -30,7 +32,10 @@ public class AlunoService implements UsuarioAbstractService<AlunoDto, AlunoCreat
     @Override
     public AlunoCreateDto buscarPorEmail(String email) {
         Aluno entidade = repository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException());
-        return modelMapper.map(entidade, AlunoCreateDto.class);
+        AlunoCreateDto dto = modelMapper.map(entidade, AlunoCreateDto.class);
+        // For auth purposes, map the hashed password to the senha field
+        dto.setSenha(entidade.getSenhaHash());
+        return dto;
     }
 
     @Override
@@ -57,6 +62,15 @@ public class AlunoService implements UsuarioAbstractService<AlunoDto, AlunoCreat
         entidade.setDataCadastro(LocalDateTime.now());
         entidade.setNivel(0);
         entidade.setXpTotal(0);
+        
+        // Hash the password before saving
+        entidade.setSenhaHash(Util.gerarHashMD5(dto.getSenha()));
+        
+        // Set role if not already set
+        if (entidade.getRole() == null) {
+            entidade.setRole(Role.ALUNO);
+        }
+        
         repository.save(entidade);
 
         return modelMapper.map(entidade, AlunoDto.class);
@@ -68,6 +82,27 @@ public class AlunoService implements UsuarioAbstractService<AlunoDto, AlunoCreat
                 .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
 
         repository.deleteById(id);
-
+    }
+    
+    public AlunoDto adicionarXp(Long id, int xpGanho) {
+        Aluno entidade = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
+        
+        entidade.setXpTotal(entidade.getXpTotal() + xpGanho);
+        repository.save(entidade);
+        
+        return modelMapper.map(entidade, AlunoDto.class);
+    }
+    
+    public AlunoDto recalcularXpTotal(Long id) {
+        Aluno entidade = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
+        
+        // This would require calling the learning service to get all conquistas
+        // For now, just reset to 0 and let future conquistas rebuild it
+        entidade.setXpTotal(0);
+        repository.save(entidade);
+        
+        return modelMapper.map(entidade, AlunoDto.class);
     }
 }

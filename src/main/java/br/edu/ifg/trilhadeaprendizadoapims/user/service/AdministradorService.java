@@ -3,7 +3,9 @@ package br.edu.ifg.trilhadeaprendizadoapims.user.service;
 import br.edu.ifg.trilhadeaprendizadoapims.user.dto.AdminCreateDto;
 import br.edu.ifg.trilhadeaprendizadoapims.user.dto.AdministradorDto;
 import br.edu.ifg.trilhadeaprendizadoapims.user.model.Administrador;
+import br.edu.ifg.trilhadeaprendizadoapims.user.model.enums.Role;
 import br.edu.ifg.trilhadeaprendizadoapims.user.repository.AdministradorRepository;
+import br.edu.ifg.trilhadeaprendizadoapims.user.util.Util;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,10 @@ public class AdministradorService implements UsuarioAbstractService<Administrado
     @Override
     public AdminCreateDto buscarPorEmail(String email) {
         Administrador entidade = repository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException());
-        return modelMapper.map(entidade, AdminCreateDto.class);
+        AdminCreateDto dto = modelMapper.map(entidade, AdminCreateDto.class);
+        // For auth purposes, map the hashed password to the senha field
+        dto.setSenha(entidade.getSenhaHash());
+        return dto;
     }
 
     @Override
@@ -50,6 +55,15 @@ public class AdministradorService implements UsuarioAbstractService<Administrado
 
     public AdministradorDto inserir(AdminCreateDto dto) {
         Administrador entidade = modelMapper.map(dto, Administrador.class);
+        
+        // Hash the password before saving
+        entidade.setSenhaHash(Util.gerarHashMD5(dto.getSenha()));
+        
+        // Set role if not already set
+        if (entidade.getRole() == null) {
+            entidade.setRole(Role.ADMIN);
+        }
+        
         repository.save(entidade);
 
         return modelMapper.map(entidade, AdministradorDto.class);
