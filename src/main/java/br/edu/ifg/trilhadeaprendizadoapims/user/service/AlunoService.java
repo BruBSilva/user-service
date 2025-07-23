@@ -1,7 +1,7 @@
 package br.edu.ifg.trilhadeaprendizadoapims.user.service;
 
-import br.edu.ifg.trilhadeaprendizadoapims.user.dto.AlunoCreateDto;
 import br.edu.ifg.trilhadeaprendizadoapims.user.dto.AlunoDto;
+import br.edu.ifg.trilhadeaprendizadoapims.user.dto.UsuarioCreateDto;
 import br.edu.ifg.trilhadeaprendizadoapims.user.model.Aluno;
 import br.edu.ifg.trilhadeaprendizadoapims.user.repository.AlunoRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-public class AlunoService implements UsuarioAbstractService<AlunoDto, AlunoCreateDto> {
+public class AlunoService implements UsuarioAbstractService<AlunoDto, UsuarioCreateDto> {
 
     @Autowired
     private AlunoRepository repository;
@@ -46,7 +46,7 @@ public class AlunoService implements UsuarioAbstractService<AlunoDto, AlunoCreat
     }
 
     @Override
-    public AlunoDto inserir(AlunoCreateDto dto) {
+    public AlunoDto inserir(UsuarioCreateDto dto) {
         Aluno entidade = modelMapper.map(dto, Aluno.class);
         entidade.setDataCadastro(LocalDateTime.now());
         entidade.setNivel(0);

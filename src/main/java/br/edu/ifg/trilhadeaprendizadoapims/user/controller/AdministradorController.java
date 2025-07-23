@@ -1,7 +1,7 @@
 package br.edu.ifg.trilhadeaprendizadoapims.user.controller;
 
-import br.edu.ifg.trilhadeaprendizadoapims.user.dto.AdminCreateDto;
 import br.edu.ifg.trilhadeaprendizadoapims.user.dto.AdministradorDto;
+import br.edu.ifg.trilhadeaprendizadoapims.user.dto.UsuarioCreateDto;
 import br.edu.ifg.trilhadeaprendizadoapims.user.service.AdministradorService;
 import br.edu.ifg.trilhadeaprendizadoapims.user.service.UsuarioAbstractService;
 import jakarta.validation.Valid;
@@ -17,13 +17,13 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/admin")
-public class AdministradorController extends UsuarioController<AdministradorDto, AdminCreateDto>{
+public class AdministradorController extends UsuarioController<AdministradorDto, UsuarioCreateDto>{
 
     @Autowired
     private AdministradorService adminService;
 
     @Override
-    protected UsuarioAbstractService<AdministradorDto, AdminCreateDto> getService() {
+    protected UsuarioAbstractService<AdministradorDto, UsuarioCreateDto> getService() {
         return adminService;
     }
 
@@ -33,7 +33,7 @@ public class AdministradorController extends UsuarioController<AdministradorDto,
     }
 
     @PostMapping
-    public ResponseEntity<AdministradorDto> inserir(@RequestBody @Valid AdminCreateDto dto, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<AdministradorDto> inserir(@RequestBody @Valid UsuarioCreateDto dto, UriComponentsBuilder uriBuilder) {
         AdministradorDto dtoCriado = adminService.inserir(dto);
         URI endereco = uriBuilder.path("/admin/{id}").buildAndExpand(dtoCriado.getId()).toUri();
         return ResponseEntity.created(endereco).body(dtoCriado);

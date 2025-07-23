@@ -1,7 +1,6 @@
 package br.edu.ifg.trilhadeaprendizadoapims.user.config;
 
-import br.edu.ifg.trilhadeaprendizadoapims.user.dto.AdminCreateDto;
-import br.edu.ifg.trilhadeaprendizadoapims.user.dto.AlunoCreateDto;
+import br.edu.ifg.trilhadeaprendizadoapims.user.dto.UsuarioCreateDto;
 import br.edu.ifg.trilhadeaprendizadoapims.user.model.Administrador;
 import br.edu.ifg.trilhadeaprendizadoapims.user.model.Aluno;
 import br.edu.ifg.trilhadeaprendizadoapims.user.util.Util;
@@ -28,13 +27,13 @@ public class Configuracao {
             }
         };
 
-        modelMapper.typeMap(AlunoCreateDto.class, Aluno.class)
+        modelMapper.typeMap(UsuarioCreateDto.class, Aluno.class)
                 .addMappings(mapper -> mapper.using(hashConverter)
-                        .map(AlunoCreateDto::getSenha, Aluno::setSenhaHash));
+                        .map(UsuarioCreateDto::getSenha, Aluno::setSenhaHash));
 
-        modelMapper.typeMap(AdminCreateDto.class, Administrador.class)
+        modelMapper.typeMap(UsuarioCreateDto.class, Administrador.class)
                 .addMappings(mapper -> mapper.using(hashConverter)
-                        .map(AdminCreateDto::getSenha, Administrador::setSenhaHash));
+                        .map(UsuarioCreateDto::getSenha, Administrador::setSenhaHash));
 
         return modelMapper;
     }
