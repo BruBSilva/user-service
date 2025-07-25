@@ -59,7 +59,6 @@ public class AlunoController extends UsuarioController<AlunoDto, AlunoCreateDto>
         }
     }
     
-    // DTO for XP update request
     public static class XpUpdateRequest {
         private int xpGanho;
         

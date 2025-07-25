@@ -31,7 +31,6 @@ public class AdministradorService implements UsuarioAbstractService<Administrado
     public AdminCreateDto buscarPorEmail(String email) {
         Administrador entidade = repository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException());
         AdminCreateDto dto = modelMapper.map(entidade, AdminCreateDto.class);
-        // For auth purposes, map the hashed password to the senha field
         dto.setSenha(entidade.getSenhaHash());
         return dto;
     }
@@ -56,10 +55,8 @@ public class AdministradorService implements UsuarioAbstractService<Administrado
     public AdministradorDto inserir(AdminCreateDto dto) {
         Administrador entidade = modelMapper.map(dto, Administrador.class);
         
-        // Hash the password before saving
         entidade.setSenhaHash(Util.gerarHashMD5(dto.getSenha()));
         
-        // Set role if not already set
         if (entidade.getRole() == null) {
             entidade.setRole(Role.ADMIN);
         }

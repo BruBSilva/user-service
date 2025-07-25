@@ -33,7 +33,6 @@ public class AlunoService implements UsuarioAbstractService<AlunoDto, AlunoCreat
     public AlunoCreateDto buscarPorEmail(String email) {
         Aluno entidade = repository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException());
         AlunoCreateDto dto = modelMapper.map(entidade, AlunoCreateDto.class);
-        // For auth purposes, map the hashed password to the senha field
         dto.setSenha(entidade.getSenhaHash());
         return dto;
     }
@@ -63,10 +62,8 @@ public class AlunoService implements UsuarioAbstractService<AlunoDto, AlunoCreat
         entidade.setNivel(0);
         entidade.setXpTotal(0);
         
-        // Hash the password before saving
         entidade.setSenhaHash(Util.gerarHashMD5(dto.getSenha()));
         
-        // Set role if not already set
         if (entidade.getRole() == null) {
             entidade.setRole(Role.ALUNO);
         }
@@ -98,8 +95,6 @@ public class AlunoService implements UsuarioAbstractService<AlunoDto, AlunoCreat
         Aluno entidade = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
         
-        // This would require calling the learning service to get all conquistas
-        // For now, just reset to 0 and let future conquistas rebuild it
         entidade.setXpTotal(0);
         repository.save(entidade);
         
