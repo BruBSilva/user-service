@@ -1,7 +1,7 @@
 package br.edu.ifg.trilhadeaprendizadoapims.user.service;
 
-import br.edu.ifg.trilhadeaprendizadoapims.user.dto.AdminCreateDto;
 import br.edu.ifg.trilhadeaprendizadoapims.user.dto.AdministradorDto;
+import br.edu.ifg.trilhadeaprendizadoapims.user.dto.UsuarioCreateDto;
 import br.edu.ifg.trilhadeaprendizadoapims.user.model.Administrador;
 import br.edu.ifg.trilhadeaprendizadoapims.user.model.enums.Role;
 import br.edu.ifg.trilhadeaprendizadoapims.user.repository.AdministradorRepository;
@@ -14,7 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AdministradorService implements UsuarioAbstractService<AdministradorDto, AdminCreateDto>{
+public class AdministradorService implements UsuarioAbstractService<AdministradorDto, UsuarioCreateDto>{
 
     @Autowired
     private AdministradorRepository repository;
@@ -52,7 +52,7 @@ public class AdministradorService implements UsuarioAbstractService<Administrado
                 .map(entidade -> modelMapper.map(entidade, AdministradorDto.class));
     }
 
-    public AdministradorDto inserir(AdminCreateDto dto) {
+    public AdministradorDto inserir(UsuarioCreateDto dto) {
         Administrador entidade = modelMapper.map(dto, Administrador.class);
         
         entidade.setSenhaHash(Util.gerarHashMD5(dto.getSenha()));
