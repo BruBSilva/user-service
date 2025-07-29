@@ -32,9 +32,7 @@ public class AlunoService implements UsuarioAbstractService<AlunoDto, UsuarioCre
     @Override
     public UsuarioCreateDto buscarPorEmail(String email) {
         Aluno entidade = repository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException());
-        UsuarioCreateDto dto = modelMapper.map(entidade, UsuarioCreateDto.class);
-        dto.setSenha(entidade.getSenhaHash());
-        return dto;
+        return modelMapper.map(entidade, UsuarioCreateDto.class);
     }
 
     @Override
