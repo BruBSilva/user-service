@@ -1,6 +1,6 @@
 package br.edu.ifg.trilhadeaprendizadoapims.user.controller;
 
-import br.edu.ifg.trilhadeaprendizadoapims.user.dto.AlunoCreateDto;
+import br.edu.ifg.trilhadeaprendizadoapims.user.dto.UsuarioCreateDto;
 import br.edu.ifg.trilhadeaprendizadoapims.user.dto.AlunoDto;
 import br.edu.ifg.trilhadeaprendizadoapims.user.service.AlunoService;
 import br.edu.ifg.trilhadeaprendizadoapims.user.service.UsuarioAbstractService;
@@ -17,13 +17,13 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/usuario/aluno")
-public class AlunoController extends UsuarioController<AlunoDto, AlunoCreateDto>{
+public class AlunoController extends UsuarioController<AlunoDto, UsuarioCreateDto>{
 
     @Autowired
     private AlunoService alunoService;
 
     @Override
-    protected UsuarioAbstractService<AlunoDto, AlunoCreateDto> getService() {
+    protected UsuarioAbstractService<AlunoDto, UsuarioCreateDto> getService() {
         return alunoService;
     }
 
@@ -33,7 +33,7 @@ public class AlunoController extends UsuarioController<AlunoDto, AlunoCreateDto>
     }
 
     @PostMapping
-    public ResponseEntity<AlunoDto> inserir(@RequestBody @Valid AlunoCreateDto dto, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<AlunoDto> inserir(@RequestBody @Valid UsuarioCreateDto dto, UriComponentsBuilder uriBuilder) {
         AlunoDto dtoCriado = alunoService.inserir(dto);
         URI endereco = uriBuilder.path("/aluno/{id}").buildAndExpand(dtoCriado.getId()).toUri();
         return ResponseEntity.created(endereco).body(dtoCriado);
